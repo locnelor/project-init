@@ -11,7 +11,6 @@ type SysMenuEntity {
   role: Int!
   comment: String!
   parentId: Int
-  visible: Boolean!
   parent: SysMenuEntity
   children: [SysMenuEntity!]
   sys_menu_on_role: [SysMenuOnRoleEntity!]
@@ -23,6 +22,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type SysMenuOnRoleEntity {
+  power: Int!
   sys_roleId: Int!
   sys_menuId: Int!
   role: SysRoleEntity
@@ -34,7 +34,6 @@ type SysRoleEntity {
   createAt: DateTime!
   updateAt: DateTime!
   name: String!
-  sort: Int!
   status: Boolean!
   comment: String
   sys_menu_on_role: [SysMenuOnRoleEntity!]
@@ -52,10 +51,31 @@ type SysUserEntity {
   role: SysRoleEntity
 }
 
+type UserPagination {
+  total: Int!
+  page: Int!
+  size: Int!
+  data: [SysUserEntity!]!
+}
+
 type Query {
   viewer: SysUserEntity!
+  isAdmin: Boolean!
+  getMenu: [SysMenuEntity!]!
+  getRole: [SysRoleEntity!]!
+  findUsers(page: Int!, size: Int!): UserPagination!
 }
 
 type Mutation {
-  auth(account: String!, password: String!): SysUserEntity!
+  initAdmin(account: String!, password: String!, name: String!): Boolean!
+  auth(account: String!, password: String!): String!
+  createRole(name: String!, status: Boolean! = true, sort: Int, comment: String, id: Int): SysRoleEntity!
+  updateRole(id: Int!, name: String, status: Boolean, sort: Int, comment: String): SysRoleEntity!
+  createRoleMenu(sys_roleId: Int!, sys_menuId: Int!, power: Int!): SysMenuOnRoleEntity!
+  updateRoleMenu(sys_roleId: Int!, sys_menuId: Int!, power: Int!): SysMenuOnRoleEntity!
+  deleteRoleMenu(sys_roleId: Int!, sys_menuId: Int!): Boolean!
+  deleteRole(id: Int!): Boolean!
+  createUser: SysUserEntity!
+  updateUser: SysUserEntity!
+  deleteUser: SysUserEntity!
 }

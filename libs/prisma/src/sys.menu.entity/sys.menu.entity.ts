@@ -20,9 +20,6 @@ export class SysMenuEntity extends BaseEntity implements sys_menu {
   @Field(() => Int, { nullable: true })
   parentId: number;
 
-  @Field(() => Boolean)
-  visible: boolean;
-
   @Field(() => SysMenuEntity, { nullable: true })
   parent?: SysMenuEntity
 

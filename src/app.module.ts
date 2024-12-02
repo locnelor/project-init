@@ -8,7 +8,7 @@ import { join } from 'path';
 import * as Joi from 'joi';
 import { RedisCacheModule } from '@app/redis-cache';
 import { AuthModule } from './auth/auth.module';
-import { MenuModule } from './menu/menu.module';
+import { SystemModule } from './system/system.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -67,7 +67,7 @@ import { MenuModule } from './menu/menu.module';
     }),
     RedisCacheModule,
     AuthModule,
-    MenuModule
+    SystemModule
   ],
   controllers: [AppController],
   providers: [AppService],

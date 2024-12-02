@@ -6,6 +6,9 @@ import { SysMenuEntity } from "../sys.menu.entity/sys.menu.entity";
 @ObjectType()
 export class SysMenuOnRoleEntity implements sys_menu_on_role {
   @Field(() => Int)
+  power: number;
+
+  @Field(() => Int)
   sys_roleId: number;
 
   @Field(() => Int)

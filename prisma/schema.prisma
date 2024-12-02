@@ -36,7 +36,6 @@ model sys_menu {
   parentId         Int?
   children         sys_menu[]         @relation("SysMenuParent")
   sys_menu_on_role sys_menu_on_role[]
-  visible          Boolean            @default(false)
 }
 
 //权限树 on 角色
@@ -45,6 +44,7 @@ model sys_menu_on_role {
   sys_roleId Int
   menu       sys_menu @relation(fields: [sys_menuId], references: [id])
   sys_menuId Int
+  power      Int      @default(0)
 
   @@id([sys_roleId, sys_menuId])
 }
@@ -55,7 +55,6 @@ model sys_role {
   createAt         DateTime           @default(now())
   updateAt         DateTime           @default(now()) @updatedAt
   name             String             @unique
-  sort             Int                @default(0)
   status           Boolean            @default(true)
   comment          String?            @db.LongText
   sys_menu_on_role sys_menu_on_role[]

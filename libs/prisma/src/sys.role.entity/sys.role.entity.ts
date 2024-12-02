@@ -1,6 +1,6 @@
 import { sys_role } from "@prisma/client";
 import { BaseEntity } from "../base.entity/base.entity";
-import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType } from "@nestjs/graphql";
 import { SysMenuOnRoleEntity } from "../sys.menu.on.role.entity/sys.menu.on.role.entity";
 import { SysUserEntity } from "../sys.user.entity/sys.user.entity";
 
@@ -8,9 +8,6 @@ import { SysUserEntity } from "../sys.user.entity/sys.user.entity";
 export class SysRoleEntity extends BaseEntity implements sys_role {
   @Field()
   name: string;
-
-  @Field(() => Int)
-  sort: number;
 
   @Field(() => Boolean)
   status: boolean;

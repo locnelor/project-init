@@ -1,5 +1,3 @@
-
-import { HashService } from "@app/hash";
 import { SysUserEntity } from "@app/prisma/sys.user.entity/sys.user.entity";
 import { AuthenticationError, ForbiddenError } from "@nestjs/apollo";
 import { ExecutionContext, ForbiddenException, UnauthorizedException, createParamDecorator } from "@nestjs/common";
@@ -48,15 +46,76 @@ export const CurrentUser = createParamDecorator(
     return context.switchToHttp().getRequest().user
   },
 );
-const client = new PrismaClient();
-let time: NodeJS.Timeout;
-
-
+type MenuItem = { path: string, name?: string, parentPath?: string }
+const menus: MenuItem[] = [];
+const menuPowers = new Map<string, number>();
+let time;
+const client = new PrismaClient()
+const initMenu = async () => {
+  const current = await client.sys_menu.findMany();
+  const menuSet = new Set(menus.map(item => item.path));
+  const currentMap = new Map(current.map(item => [item.path, item]));
+  if (menuSet.size !== menus.length) {
+    console.error("菜单路径有重复!")
+    throw new Error('菜单路径有重复')
+  }
+  //检查是否有新增菜单
+  for (const item of menus) {
+    if (currentMap.has(item.path)) continue;
+    console.log(`新增菜单:${item.path} - ${item.name}`)
+    const entity = await client.sys_menu.create({
+      data: {
+        path: item.path,
+        name: item.name,
+        role: 0
+      }
+    })
+    currentMap.set(item.path, entity)
+  }
+  for (const item of current) {
+    //若数据库中的菜单不在当前菜单列表中，删除该菜单
+    if (!menuSet.has(item.path)) {
+      console.log(`删除菜单:${item.path} - ${item.name}`)
+      await client.sys_menu_on_role.deleteMany({
+        where: {
+          menu: {
+            path: item.path
+          }
+        }
+      })
+      await client.sys_menu.delete({
+        where: {
+          path: item.path
+        }
+      })
+      continue;
+    }
+    //更新菜单
+    for (const item of menus) {
+      await client.sys_menu.update({
+        where: {
+          id: currentMap.get(item.path).id
+        },
+        data: {
+          name: item.name,
+          parentId: currentMap.get(item.parentPath)?.id,
+          role: menuPowers.get(item.path) || 0
+        }
+      })
+    }
+  }
+}
+const run = (item: MenuItem) => {
+  menus.push(item);
+  clearTimeout(time);
+  time = setTimeout(initMenu, 1000)
+}
 export class AuthPowerGuard extends AuthGuard("jwt") {
   constructor(
-    private readonly config: { path: string, name?: string },
-    private readonly power?: number[]
+    private readonly config: MenuItem,
+    private readonly power: number[] = []
   ) {
+    menuPowers.set(config.path, power.reduce((acc, item) => acc | item, menuPowers.get(config.path) || 0))
     super()
   }
   canActivate(context: ExecutionContext) {
@@ -85,11 +144,20 @@ export class AuthPowerGuard extends AuthGuard("jwt") {
     return user
   }
 }
+export const MakeAuthPowerGuard = (path: string, name: string, parentPath?: string) => {
+  run({ path, name, parentPath })
+  return (power?: number[]) => new AuthPowerGuard({ path, name, parentPath }, power)
+}
+export const MakeGqlAuthPowerGuard = (path: string, name: string, parentPath?: string) => {
+  run({ path, name, parentPath })
+  return (power?: number[]) => new GqlAuthPowerGuard({ path, name, parentPath }, power)
+}
 export class GqlAuthPowerGuard extends AuthGuard("jwt") {
   constructor(
-    private readonly config: { name?: string, path: string },
-    private readonly power?: number[]
+    private readonly config: MenuItem,
+    private readonly power: number[] = []
   ) {
+    menuPowers.set(config.path, power.reduce((acc, item) => acc | item, menuPowers.get(config.path) || 0))
     super()
   }
   canActivate(context: ExecutionContext) {

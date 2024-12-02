@@ -12,18 +12,33 @@ export class AuthResolver {
   constructor(
     private readonly prisma: PrismaService,
     private readonly authService: AuthService,
-    private readonly hash: HashService
+    private readonly hash: HashService,
   ) { }
 
+
   @Query(() => SysUserEntity)
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(new GqlAuthGuard)
   viewer(
     @GqlCurrentUser() user: SysUserEntity
   ) {
     return user;
   }
 
-  @Mutation(() => SysUserEntity)
+  @Mutation(() => Boolean)
+  async initAdmin(
+    @Args("account") account: string,
+    @Args("password") password: string,
+    @Args("name") name: string
+  ) {
+    return this.authService.initAdmin(account, password, name)
+  }
+
+  @Query(() => Boolean)
+  async isAdmin() {
+    return (await this.prisma.sys_user.count() > 0)
+  }
+
+  @Mutation(() => String)
   async auth(
     @Args("account") account: string,
     @Args("password") password: string
