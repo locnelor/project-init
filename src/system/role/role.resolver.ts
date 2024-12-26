@@ -4,7 +4,9 @@ import { SystemMenuPath } from '../system.resolver';
 import { PrismaService } from '@app/prisma';
 import { SysRoleEntity } from '@app/prisma/sys.role.entity/sys.role.entity';
 import { UseGuards } from '@nestjs/common';
-import { SysMenuOnRoleEntity } from '@app/prisma/sys.menu.on.role.entity/sys.menu.on.role.entity';
+import { Prisma } from '@prisma/client';
+import { ForbiddenError } from '@nestjs/apollo';
+import { SysMenuOnRoleInput } from './dto/sys.menu.on.role.input';
 
 const RoleGuard = MakeGqlAuthPowerGuard("/system/role", "角色管理", SystemMenuPath)
 @Resolver()
@@ -18,8 +20,28 @@ export class RoleResolver {
    */
   @Query(() => [SysRoleEntity])
   @UseGuards(RoleGuard([VIEW_POWER]))
-  async getRole() {
+  async getRole(
+    @Args("id", { type: () => Int, nullable: true }) id?: number,
+    @Args("name", { nullable: true }) name?: string,
+    @Args("status", { type: () => Boolean, nullable: true }) status: boolean = true,
+    @Args("comment", { nullable: true }) comment?: string,
+  ) {
+    const where: Prisma.sys_roleWhereInput = { status };
+    if (!!id) {
+      where.id = id;
+    }
+    if (!!name) {
+      where.name = {
+        contains: name
+      }
+    }
+    if (!!comment) {
+      where.comment = {
+        contains: comment
+      }
+    }
     return this.prisma.sys_role.findMany({
+      where,
       include: {
         sys_menu_on_role: true
       }
@@ -34,15 +56,19 @@ export class RoleResolver {
   createRole(
     @Args("name") name: string,
     @Args("status", { type: () => Boolean, defaultValue: true }) status: boolean,
-    @Args("sort", { type: () => Int, nullable: true }) sort?: number,
     @Args("comment", { nullable: true }) comment?: string,
-    @Args("id", { type: () => Int, nullable: true }) id?: number
+    @Args("sys_menu_on_role", { nullable: true, type: () => [SysMenuOnRoleInput] }) sys_menu_on_role?: SysMenuOnRoleInput[]
   ) {
     return this.prisma.sys_role.create({
       data: {
         name,
         status,
-        comment
+        comment,
+        sys_menu_on_role: {
+          createMany: {
+            data: sys_menu_on_role || []
+          }
+        }
       }
     })
   }
@@ -52,81 +78,43 @@ export class RoleResolver {
    */
   @Mutation(() => SysRoleEntity)
   @UseGuards(RoleGuard([UPDATE_POWER]))
-  updateRole(
+  async updateRole(
     @Args("id", { type: () => Int }) id: number,
     @Args("name", { nullable: true }) name?: string,
     @Args("status", { type: () => Boolean, nullable: true }) status?: boolean,
-    @Args("sort", { type: () => Int, nullable: true }) sort?: number,
     @Args("comment", { nullable: true }) comment?: string,
+    @Args("sys_menu_on_role", { nullable: true, type: () => [SysMenuOnRoleInput] }) sys_menu_on_role?: SysMenuOnRoleInput[]
   ) {
-    return this.prisma.sys_role.update({
+    const role = await this.prisma.sys_role.findUnique({
+      where: {
+        id
+      },
+      include: {
+        sys_menu_on_role: true
+      }
+    })
+    if (!role) {
+      throw new ForbiddenError("角色不存在")
+    }
+    if (!!sys_menu_on_role) {
+      await this.prisma.sys_menu_on_role.deleteMany({
+        where: {
+          sys_roleId: id
+        }
+      })
+    }
+    return await this.prisma.sys_role.update({
       where: {
         id
       },
       data: {
         name,
         status,
-        comment
-      }
-    })
-  }
-
-  /**
-   * 新增角色权限
-   */
-  @Mutation(() => SysMenuOnRoleEntity)
-  @UseGuards(RoleGuard([CREATE_POWER]))
-  createRoleMenu(
-    @Args("sys_roleId", { type: () => Int }) sys_roleId: number,
-    @Args("sys_menuId", { type: () => Int }) sys_menuId: number,
-    @Args("power", { type: () => Int }) power: number,
-  ) {
-    return this.prisma.sys_menu_on_role.create({
-      data: {
-        sys_roleId,
-        sys_menuId,
-        power
-      }
-    })
-  }
-
-  /**
-   * 修改角色权限
-   */
-  @Mutation(() => SysMenuOnRoleEntity)
-  @UseGuards(RoleGuard([UPDATE_POWER]))
-  updateRoleMenu(
-    @Args("sys_roleId", { type: () => Int }) sys_roleId: number,
-    @Args("sys_menuId", { type: () => Int }) sys_menuId: number,
-    @Args("power", { type: () => Int }) power: number,
-  ) {
-    return this.prisma.sys_menu_on_role.update({
-      where: {
-        sys_roleId_sys_menuId: {
-          sys_roleId,
-          sys_menuId
-        }
-      },
-      data: {
-        power
-      }
-    })
-  }
-
-  /**
-   * 删除角色权限
-   */
-  @Mutation(() => Boolean)
-  @UseGuards(RoleGuard([DELETE_POWER]))
-  deleteRoleMenu(
-    @Args("sys_roleId", { type: () => Int }) sys_roleId: number,
-    @Args("sys_menuId", { type: () => Int }) sys_menuId: number
-  ) {
-    return this.prisma.sys_menu_on_role.delete({
-      where: {
-        sys_roleId_sys_menuId: {
-          sys_roleId,
-          sys_menuId
+        comment,
+        sys_menu_on_role: {
+          createMany: {
+            data: sys_menu_on_role || []
+          }
         }
       }
     })
@@ -135,21 +123,26 @@ export class RoleResolver {
   /**
    * 删除角色
    */
-  @Mutation(() => Boolean)
+  @Mutation(() => Int)
   @UseGuards(RoleGuard([DELETE_POWER]))
   async deleteRole(
-    @Args("id", { type: () => Int }) id: number
+    @Args("ids", { type: () => [Int] }) ids: number[]
   ) {
-    await this.prisma.sys_menu_on_role.deleteMany({
-      where: {
-        sys_roleId: id
-      }
-    })
-    return await this.prisma.sys_role.delete({
-      where: {
-        id
-      }
-    })
+    let count = 0;
+    for (const id of ids) {
+      await this.prisma.sys_menu_on_role.deleteMany({
+        where: {
+          sys_roleId: id
+        }
+      })
+      await this.prisma.sys_role.delete({
+        where: {
+          id
+        }
+      })
+      count++;
+    }
+    return count
   }
 }
 

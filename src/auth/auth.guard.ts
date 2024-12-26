@@ -110,6 +110,28 @@ const run = (item: MenuItem) => {
   clearTimeout(time);
   time = setTimeout(initMenu, 1000)
 }
+const handleRequest = (err, user, config, powerArray) => {
+  if (!powerArray) return user
+  if (err || !user) {
+    return 401
+  }
+  if (powerArray.length === 0) {
+    return user;
+  }
+  const {
+    menu: {
+      role
+    }
+  } = user.role.sys_menu_on_role.find(({ menu }) => {
+    return menu.path === config.path
+  }) || { role: 0 };
+  if (!role) return 403
+  const power = powerArray.reduce((acc, item) => acc | item, 0);
+  if ((power & role) !== power) {
+    return 403
+  }
+  return 0;
+}
 export class AuthPowerGuard extends AuthGuard("jwt") {
   constructor(
     private readonly config: MenuItem,
@@ -122,6 +144,10 @@ export class AuthPowerGuard extends AuthGuard("jwt") {
     return super.canActivate(context);
   }
   handleRequest(err, user) {
+    const num = handleRequest(err, user, this.config, this.power)
+    if (num === 401) throw new AuthenticationError('请先登录！');
+    if (num === 403) throw new ForbiddenError('权限不足');
+    return user
     if (!this.power) return user
     if (err || !user) {
       throw err || new UnauthorizedException('请先登录！');
@@ -168,6 +194,10 @@ export class GqlAuthPowerGuard extends AuthGuard("jwt") {
     );
   }
   handleRequest<TUser extends SysUserEntity>(err: any, user: TUser) {
+    const num = handleRequest(err, user, this.config, this.power)
+    if (num === 401) throw new AuthenticationError('请先登录！');
+    if (num === 403) throw new ForbiddenError('权限不足');
+    return user
     if (!this.power) return user
     if (err || !user) {
       throw err || new AuthenticationError('请先登录！');

@@ -14,7 +14,7 @@ export class SysMenuEntity extends BaseEntity implements sys_menu {
   @Field(() => Int)
   role: number;
 
-  @Field()
+  @Field({ nullable: true })
   comment: string;
 
   @Field(() => Int, { nullable: true })

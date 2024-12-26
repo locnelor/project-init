@@ -4,6 +4,7 @@ import { SysUserEntity } from '@app/prisma/sys.user.entity/sys.user.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { UserService } from 'src/system/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -11,12 +12,12 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly hash: HashService,
     private readonly jwt: JwtService,
-    private readonly config: ConfigService
+    private readonly config: ConfigService,
+    private readonly userService: UserService
   ) { }
   public async initAdmin(account: string, password: string, name: string) {
     const count = await this.prisma.sys_user.count();
     if (count > 0) return false
-    const { hash, salt } = this.hash.cryptoPassword(password);
     await this.prisma.sys_menu_on_role.deleteMany()
     await this.prisma.sys_role.deleteMany()
     const role = await this.prisma.sys_role.create({
@@ -24,14 +25,11 @@ export class AuthService {
         name: "admin"
       }
     })
-    const sys_user = await this.prisma.sys_user.create({
-      data: {
-        account,
-        name,
-        password: hash,
-        salt,
-        sys_roleId: role.id
-      }
+    await this.userService.createUser({
+      account,
+      name,
+      password,
+      sys_roleId: role.id
     })
     const menus = await this.prisma.sys_menu.findMany()
     await this.prisma.sys_menu_on_role.createMany({
