@@ -1,11 +1,12 @@
 
+await new Promise((resolve) => setTimeout(resolve, 3000))
 
 
-const AuthRegisterPage = ()=>{
+const AuthRegisterPage = async () => {
 
   return (
     <div>
-      
+      register
     </div>
   )
 }

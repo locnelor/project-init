@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ApolloWrapper } from "@/lib/apollo-wrapper";
+import GlobalConfigProvider from "@/lib/GlobalConfigProvider";
+
 
 
 const geistSans = Geist({
@@ -30,11 +32,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AntdRegistry>
-          <ApolloWrapper>
-            {children}
-          </ApolloWrapper>
-        </AntdRegistry>
+        <GlobalConfigProvider>
+          <AntdRegistry>
+            <ApolloWrapper>
+              {children}
+            </ApolloWrapper>
+          </AntdRegistry>
+        </GlobalConfigProvider>
       </body>
     </html>
   );
