@@ -26,3 +26,7 @@ export const deepCopyObject = <T>(obj: T) => {
   }
   return newObj;
 }
+export const get = (result: any) => {
+  const keys = Object.keys(result);
+  return result[keys[0]]
+}
