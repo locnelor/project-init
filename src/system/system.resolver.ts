@@ -1,5 +1,5 @@
 import { Resolver } from '@nestjs/graphql';
-import { MakeGqlAuthPowerGuard } from 'src/auth/auth.guard';
+import { MakeGqlAuthPowerGuard } from 'src/auth/gql.auth.guard';
 
 
 

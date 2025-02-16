@@ -1,5 +1,5 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CREATE_POWER, DELETE_POWER, MakeGqlAuthPowerGuard, UPDATE_POWER, VIEW_POWER } from 'src/auth/auth.guard';
+import { CREATE_POWER, DELETE_POWER, UPDATE_POWER, VIEW_POWER } from 'src/auth/auth.guard';
 import { SystemMenuPath } from '../system.resolver';
 import { PrismaService } from '@app/prisma';
 import { SysRoleEntity } from '@app/prisma/sys.role.entity/sys.role.entity';
@@ -7,6 +7,7 @@ import { UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ForbiddenError } from '@nestjs/apollo';
 import { SysMenuOnRoleInput } from './dto/sys.menu.on.role.input';
+import { MakeGqlAuthPowerGuard } from 'src/auth/gql.auth.guard';
 
 const RoleGuard = MakeGqlAuthPowerGuard("/system/role", "角色管理", SystemMenuPath)
 @Resolver()

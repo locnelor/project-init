@@ -3,9 +3,9 @@ import { PrismaService } from '@app/prisma';
 import { SysUserEntity } from '@app/prisma/sys.user.entity/sys.user.entity';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GqlAuthGuard, GqlCurrentUser } from './auth.guard';
 import { AuthService } from './auth.service';
 import { ForbiddenError } from '@nestjs/apollo';
+import { GqlAuthGuard, GqlCurrentUser } from './gql.auth.guard';
 
 @Resolver()
 export class AuthResolver {

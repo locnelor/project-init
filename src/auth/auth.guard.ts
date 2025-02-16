@@ -1,8 +1,5 @@
-import { SysUserEntity } from "@app/prisma/sys.user.entity/sys.user.entity";
 import { AuthenticationError, ForbiddenError } from "@nestjs/apollo";
-import { ExecutionContext, ForbiddenException, UnauthorizedException, createParamDecorator } from "@nestjs/common";
-import { ExecutionContextHost } from "@nestjs/core/helpers/execution-context-host";
-import { GqlExecutionContext } from "@nestjs/graphql";
+import { ExecutionContext, UnauthorizedException, createParamDecorator } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { PrismaClient } from "@prisma/client";
 
@@ -18,37 +15,31 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     return user;
   }
 }
-export class GqlAuthGuard extends AuthGuard("jwt") {
+
+export class JwtNoAuthGuard extends AuthGuard("jwt") {
   canActivate(context: ExecutionContext) {
-    const ctx = GqlExecutionContext.create(context);
-    const { req } = ctx.getContext();
-    return super.canActivate(
-      new ExecutionContextHost([req]),
-    );
+    return super.canActivate(context);
   }
 
-  handleRequest(err: any, user: any) {
+  handleRequest(err, user, info) {
     if (err || !user) {
-      throw err || new AuthenticationError('请先登录！');
+      throw err || new UnauthorizedException();
     }
     return user;
   }
 }
-export const GqlCurrentUser = createParamDecorator(
-  (data: unknown, context: ExecutionContext) => {
-    const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req.user;
-  },
-);
+
+
 
 export const CurrentUser = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
-    return context.switchToHttp().getRequest().user
+    const user = context.switchToHttp().getRequest().user
+    return user
   },
 );
-type MenuItem = { path: string, name?: string, parentPath?: string }
+export type MenuItem = { path: string, name?: string, parentPath?: string }
 const menus: MenuItem[] = [];
-const menuPowers = new Map<string, number>();
+export const menuPowers = new Map<string, number>();
 let time;
 const client = new PrismaClient()
 const initMenu = async () => {
@@ -105,12 +96,13 @@ const initMenu = async () => {
     }
   }
 }
-const run = (item: MenuItem) => {
+export const run = (item: MenuItem) => {
+  if (menus.some(e => e.path === item.path)) return;
   menus.push(item);
   clearTimeout(time);
   time = setTimeout(initMenu, 1000)
 }
-const handleRequest = (err, user, config, powerArray) => {
+export const handleRequest = (err, user, config, powerArray) => {
   if (!powerArray) return user
   if (err || !user) {
     return 401
@@ -148,82 +140,18 @@ export class AuthPowerGuard extends AuthGuard("jwt") {
     if (num === 401) throw new AuthenticationError('请先登录！');
     if (num === 403) throw new ForbiddenError('权限不足');
     return user
-    if (!this.power) return user
-    if (err || !user) {
-      throw err || new UnauthorizedException('请先登录！');
-    }
-    if (this.power.length === 0) {
-      return user;
-    }
-    const {
-      menu: {
-        role
-      }
-    } = user.role.sys_menu_on_role.find(({ menu }) => {
-      return menu.path === this.config.path
-    }) || { role: 0 };
-    if (!role) throw new ForbiddenException('权限不足');
-    const power = this.power.reduce((acc, item) => acc | item, 0);
-    if ((power & role) !== power) {
-      throw new ForbiddenException('权限不足')
-    }
-    return user
   }
 }
 export const MakeAuthPowerGuard = (path: string, name: string, parentPath?: string) => {
   run({ path, name, parentPath })
   return (power?: number[]) => new AuthPowerGuard({ path, name, parentPath }, power)
 }
-export const MakeGqlAuthPowerGuard = (path: string, name: string, parentPath?: string) => {
-  run({ path, name, parentPath })
-  return (power?: number[]) => new GqlAuthPowerGuard({ path, name, parentPath }, power)
-}
-export class GqlAuthPowerGuard extends AuthGuard("jwt") {
-  constructor(
-    private readonly config: MenuItem,
-    private readonly power: number[] = []
-  ) {
-    menuPowers.set(config.path, power.reduce((acc, item) => acc | item, menuPowers.get(config.path) || 0))
-    super()
-  }
-  canActivate(context: ExecutionContext) {
-    const ctx = GqlExecutionContext.create(context);
-    const { req } = ctx.getContext();
-    return super.canActivate(
-      new ExecutionContextHost([req]),
-    );
-  }
-  handleRequest<TUser extends SysUserEntity>(err: any, user: TUser) {
-    const num = handleRequest(err, user, this.config, this.power)
-    if (num === 401) throw new AuthenticationError('请先登录！');
-    if (num === 403) throw new ForbiddenError('权限不足');
-    return user
-    if (!this.power) return user
-    if (err || !user) {
-      throw err || new AuthenticationError('请先登录！');
-    }
-    if (this.power.length === 0) {
-      return user;
-    }
-    const {
-      menu: {
-        role
-      }
-    } = user.role.sys_menu_on_role.find(({ menu }) => {
-      return menu.path === this.config.path
-    }) || { role: 0 };
-    if (!role) throw new ForbiddenError('权限不足');
-    const power = this.power.reduce((acc, item) => acc | item, 0);
-    if ((power & role) !== power) {
-      throw new ForbiddenError('权限不足')
-    }
-    return user
-  }
-}
+
+
 export const VIEW_POWER = 1;//查询权限
-export const CREATE_POWER = 1 << 1;//编辑权限
-export const UPDATE_POWER = 1 << 2;//删除权限
-export const DELETE_POWER = 1 << 3;//增加权限
+export const CREATE_POWER = 1 << 1;//创建权限
+export const UPDATE_POWER = 1 << 2;//修改权限
+export const DELETE_POWER = 1 << 3;//删除权限
 export const EXPORT_POWER = 1 << 4;//导出权限
 export const IMPOER_POWER = 1 << 5;//导入权限
 export const ASSIGN_POWER = 1 << 6;//分配权限

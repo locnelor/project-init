@@ -1,5 +1,5 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CREATE_POWER, DELETE_POWER, MakeGqlAuthPowerGuard, UPDATE_POWER, VIEW_POWER } from 'src/auth/auth.guard';
+import { CREATE_POWER, DELETE_POWER, UPDATE_POWER, VIEW_POWER } from 'src/auth/auth.guard';
 import { SystemMenuPath } from '../system.resolver';
 import { PrismaService } from '@app/prisma';
 import { UserPagination } from '@app/prisma/pagination/user.pagination/user.pagination';
@@ -7,6 +7,7 @@ import { UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { SysUserEntity } from '@app/prisma/sys.user.entity/sys.user.entity';
 import { UserService } from './user.service';
+import { MakeGqlAuthPowerGuard } from 'src/auth/gql.auth.guard';
 
 
 const UserGuard = MakeGqlAuthPowerGuard("/system/users", "用户管理", SystemMenuPath)
