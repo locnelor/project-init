@@ -1,0 +1,31 @@
+{
+  "name": "@pkg/database",
+  "version": "1.0.0",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "type": "commonjs",
+  "scripts": {
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:seed": "tsx src/seed.ts",
+    "db:pull": "prisma db pull",
+    "dev": "tsup src/* --watch",
+    "format": "prisma format",
+    "generate": "prisma generate",
+    "push": "prisma db push"
+  },
+  "dependencies": {
+    "@nestjs/graphql": "^13.0.3",
+    "@prisma/client": "latest"
+  },
+  "devDependencies": {
+    "@pkg/tsconfig": "workspace:*",
+    "eslint": "^8.57.0",
+    "prisma": "latest",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.2",
+    "tsx": "4.19.1",
+    "typescript": "5.5.4"
+  }
+}

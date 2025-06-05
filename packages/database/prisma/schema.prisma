@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+//********************* system
+//账号类型
+enum sys_account_provider {
+  we_chat
+  github
+  qq
+  email
+  phone
+  account
+}
+
+//系统角色
+model sys_user {
+  uid       String           @id @default(uuid())
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now()) @updatedAt
+  name      String
+  role_id   String?
+  account   String           @unique
+  accounts  sys_account[]
+  roles     sys_user_roles[]
+}
+
+//系统账号
+/**
+ * 通过provider与value快速查询。
+ * 但password需要单独设置。
+ * 例如：${user_id}_account_${password}
+ * we_chat_${openid}
+ */
+model sys_account {
+  uid       String               @id @default(uuid())
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @default(now()) @updatedAt
+  provider  sys_account_provider
+  value     String
+  user_id   String
+  user      sys_user             @relation(fields: [user_id], references: [uid])
+
+  @@unique([provider, value])
+  @@index([user_id])
+}
+
+model sys_user_roles {
+  uid       String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  user_id   String
+  role_id   String
+  user      sys_user @relation(fields: [user_id], references: [uid])
+  role      sys_role @relation(fields: [role_id], references: [uid])
+
+  @@unique([user_id, role_id])
+  @@index([role_id])
+}
+
+//菜单
+model sys_menu {
+  uid       String             @id @default(uuid())
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @default(now()) @updatedAt
+  name      String /// 菜单名称 
+  path      String? /// 菜单路径
+  sort      Int                @default(10) /// 排序
+  power     Int                @default(0) /// 权限
+  icon      String? /// 图标
+  hidden    Boolean            @default(false) /// 是否隐藏
+  type      String             @default("menu") /// 类型：menu、button、iframe、link
+  link      String? /// 链接地址
+  comment   String?            @db.Text /// 备注
+  parent_id String?
+  parent    sys_menu?          @relation("SysMenuParent", fields: [parent_id], references: [uid], onDelete: NoAction, onUpdate: NoAction)
+  children  sys_menu[]         @relation("SysMenuParent")
+  roles     sys_menu_on_role[]
+
+  @@index([parent_id])
+}
+
+//角色菜单
+model sys_menu_on_role {
+  uid       String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  role_id   String
+  menu_id   String
+  power     Int      @default(0)
+  menu      sys_menu @relation(fields: [menu_id], references: [uid])
+  role      sys_role @relation(fields: [role_id], references: [uid])
+
+  @@unique([role_id, menu_id])
+  @@index([menu_id])
+}
+
+model sys_role {
+  uid       String             @id @default(uuid())
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @default(now()) @updatedAt
+  name      String             @unique
+  status    Boolean            @default(true)
+  comment   String?            @db.LongText
+  menus     sys_menu_on_role[]
+  sort      Int                @default(10)
+  users     sys_user_roles[]
+}
