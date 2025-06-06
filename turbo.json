@@ -50,6 +50,12 @@
       "outputs": [],
       "cache": false,
       "persistent": true
+    },
+    "generate": {
+      "cache": false
+    },
+    "push": {
+      "cache": false
     }
   }
 }

@@ -42,6 +42,12 @@
       "@app/hash/*": [
         "libs/hash/src/*"
       ],
+      "@app/prisma": [
+        "libs/prisma/src"
+      ],
+      "@app/prisma/*": [
+        "libs/prisma/src/*"
+      ],
       "@app/redis-cache": [
         "libs/redis-cache/src"
       ],

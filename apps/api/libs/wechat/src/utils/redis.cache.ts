@@ -13,14 +13,14 @@ export class RedisCache implements ICache {
    * 
    * @param cache cache manager service
    */
-  constructor (readonly cache: Cache) {}
+  constructor(readonly cache: Cache) { }
 
-  public async get<T> (key: string): Promise<T> {
+  public async get<T>(key: string): Promise<T> {
     if (!key) {
       throw new Error('empty key');
     }
     key = this.namespace + key;
-    let value = {};
+    let value: any = {};
     try {
       value = await this.cache.get<T>(key) as T;
       if (!value) {
@@ -33,7 +33,7 @@ export class RedisCache implements ICache {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async set (key: string, value: any, ttl?: number): Promise<any> {
+  public async set(key: string, value: any, ttl?: number): Promise<any> {
     if (!key) {
       throw new Error('empty key');
     }
@@ -41,10 +41,10 @@ export class RedisCache implements ICache {
     if (!ttl) {
       ttl = 0;
     }
-    return this.cache.set(key, value, { ttl });
+    return this.cache.set(key, value, ttl);
   }
 
-  remove (key: string): boolean {
+  remove(key: string): boolean {
     if (!key) return false;
     key = this.namespace + key;
     try {
@@ -55,11 +55,11 @@ export class RedisCache implements ICache {
     }
   }
 
-  close (): void {
+  close(): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (typeof (this.cache.store as any).getClient === 'function') {
+    if (typeof (this.cache.stores as any).getClient === 'function') {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const client = (this.cache.store as any).getClient();
+      const client = (this.cache.stores as any).getClient();
       if (client) {
         client.quit();
       }
