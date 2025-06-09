@@ -1,14 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/worm-gareway/src",
+  "sourceRoot": "apps/worm-gateway/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/worm-gareway/tsconfig.app.json"
+    "tsConfigPath": "apps/worm-gateway/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/worm-gareway",
+  "root": "apps/worm-gateway",
   "projects": {
     "auth-power": {
       "type": "library",
@@ -91,31 +91,40 @@
         "tsConfigPath": "apps/worm-auth/tsconfig.app.json"
       }
     },
-    "worm-common": {
+    "worm-file": {
       "type": "application",
-      "root": "apps/worm-common",
+      "root": "apps/worm-file",
       "entryFile": "main",
-      "sourceRoot": "apps/worm-common/src",
+      "sourceRoot": "apps/worm-file/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/worm-common/tsconfig.app.json"
+        "tsConfigPath": "apps/worm-file/tsconfig.app.json"
       }
     },
-    "worm-gareway": {
+    "worm-gateway": {
       "type": "application",
-      "root": "apps/worm-gareway",
+      "root": "apps/worm-gateway",
       "entryFile": "main",
-      "sourceRoot": "apps/worm-gareway/src",
+      "sourceRoot": "apps/worm-gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/worm-gareway/tsconfig.app.json"
+        "tsConfigPath": "apps/worm-gateway/tsconfig.app.json"
       }
     },
-    "worm-modules": {
+    "worm-job": {
       "type": "application",
-      "root": "apps/worm-modules",
+      "root": "apps/worm-job",
       "entryFile": "main",
-      "sourceRoot": "apps/worm-modules/src",
+      "sourceRoot": "apps/worm-job/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/worm-modules/tsconfig.app.json"
+        "tsConfigPath": "apps/worm-job/tsconfig.app.json"
+      }
+    },
+    "worm-system": {
+      "type": "application",
+      "root": "apps/worm-system",
+      "entryFile": "main",
+      "sourceRoot": "apps/worm-system/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/worm-system/tsconfig.app.json"
       }
     }
   }
