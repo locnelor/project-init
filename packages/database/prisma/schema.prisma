@@ -19,16 +19,6 @@ enum sys_account_provider {
   qq // QQ登录
   email // 邮箱登录
   phone // 手机号登录
-  account // 账号密码登录
-}
-
-//权限类型
-enum sys_permission_type {
-  READ // 读取权限
-  WRITE // 写入权限
-  DELETE // 删除权限
-  EXECUTE // 执行权限
-  ADMIN // 管理权限
 }
 
 //媒体访问权限类型
@@ -42,43 +32,42 @@ enum sys_media_access_type {
 
 // 部门表 - 用于组织架构管理
 model sys_department {
-  uid               String                 @id @default(uuid())
-  createdAt         DateTime               @default(now())
-  updatedAt         DateTime               @default(now()) @updatedAt
-  name              String                 @unique /// 部门名称
-  code              String                 @unique /// 部门编码
-  sort              Int                    @default(10) /// 排序
-  status            Boolean                @default(true) /// 状态
-  comment           String?                @db.Text /// 备注
-  parent_id         String? /// 父部门ID
-  parent            sys_department?        @relation("DepartmentParent", fields: [parent_id], references: [uid], onDelete: NoAction, onUpdate: NoAction)
-  children          sys_department[]       @relation("DepartmentParent")
-  users             sys_user[]
-  media_permissions sys_media_permission[]
+  uid       String           @id @default(uuid())
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now()) @updatedAt
+  name      String           @unique /// 部门名称
+  code      String           @unique /// 部门编码
+  sort      Int              @default(10) /// 排序
+  status    Boolean          @default(true) /// 状态
+  comment   String?          @db.Text /// 备注
+  parent_id String? /// 父部门ID
+  parent    sys_department?  @relation("DepartmentParent", fields: [parent_id], references: [uid], onDelete: NoAction, onUpdate: NoAction)
+  children  sys_department[] @relation("DepartmentParent")
+  users     sys_user[]
 
   @@index([parent_id])
 }
 
 // 系统用户表 - 核心用户信息
 model sys_user {
-  uid               String                 @id @default(uuid())
-  createdAt         DateTime               @default(now())
-  updatedAt         DateTime               @default(now()) @updatedAt
-  name              String /// 用户名称
-  account           String                 @unique /// 账号
-  email             String?                @unique /// 邮箱
-  phone             String?                @unique /// 手机号
-  avatar            String? /// 头像
-  status            Boolean                @default(true) /// 状态
-  last_login_at     DateTime? /// 最后登录时间
-  department_id     String? /// 部门ID
-  department        sys_department?        @relation(fields: [department_id], references: [uid])
-  accounts          sys_account[] // 关联的登录账号
-  roles             sys_user_roles[] // 用户角色关联
-  ban_menus         sys_user_ban_menu[] // 用户菜单黑名单
-  user_media        sys_user_media[] // 用户关联的媒体文件
-  media_permissions sys_media_permission[] // 用户的媒体权限
-  created_media     sys_media[]            @relation("MediaCreator") // 用户创建的媒体文件
+  uid           String              @id @default(uuid())
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @default(now()) @updatedAt
+  name          String /// 用户名称
+  account       String              @unique /// 账号
+  email         String?             @unique /// 邮箱
+  phone         String?             @unique /// 手机号
+  avatar        String? /// 头像
+  status        Boolean             @default(true) /// 状态
+  last_login_at DateTime? /// 最后登录时间
+  department_id String? /// 部门ID
+  password      String /// 密码
+  department    sys_department?     @relation(fields: [department_id], references: [uid])
+  accounts      sys_account[] // 关联的登录账号
+  roles         sys_user_roles[] // 用户角色关联
+  ban_menus     sys_user_ban_menu[] // 用户菜单黑名单
+  user_media    sys_user_media[] // 用户关联的媒体文件
+  created_media sys_media[]         @relation("MediaCreator") // 用户创建的媒体文件
 
   @@index([department_id])
 }
@@ -132,7 +121,7 @@ model sys_menu {
   status     Boolean             @default(true) /// 状态
   cache      Boolean             @default(false) /// 是否缓存
   type       String              @default("menu") /// 类型：menu、button、iframe、link
-  permission String? /// 权限标识
+  permission Int                 @default(0) /// 权限标识
   link       String? /// 外链地址
   frame      Boolean             @default(false) /// 是否内嵌iframe
   comment    String?             @db.Text /// 备注
@@ -143,7 +132,6 @@ model sys_menu {
   user_bans  sys_user_ban_menu[] // 用户菜单黑名单
 
   @@index([parent_id])
-  @@index([permission])
 }
 
 // 用户菜单黑名单表 - 用于特定用户禁用某些菜单
@@ -162,14 +150,13 @@ model sys_user_ban_menu {
 
 // 角色菜单权限关联表
 model sys_menu_on_role {
-  uid         String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  role_id     String
-  menu_id     String
-  permissions String   @db.Text /// 权限类型数组，JSON格式存储
-  menu        sys_menu @relation(fields: [menu_id], references: [uid])
-  role        sys_role @relation(fields: [role_id], references: [uid])
+  uid       String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  role_id   String
+  menu_id   String
+  menu      sys_menu @relation(fields: [menu_id], references: [uid])
+  role      sys_role @relation(fields: [role_id], references: [uid])
 
   @@unique([role_id, menu_id])
   @@index([menu_id])
@@ -192,60 +179,39 @@ model sys_role {
 
 // 媒体文件表 - 用于文件存储管理
 model sys_media {
-  uid            String                 @id @default(uuid())
-  createdAt      DateTime               @default(now())
-  updatedAt      DateTime               @default(now()) @updatedAt
+  uid            String                @id @default(uuid())
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @default(now()) @updatedAt
   name           String /// 文件名
   alias          String? /// 文件别名
   keywords       String? /// 关键字，用于搜索
   size           Int /// 文件大小(字节)
-  hash           String                 @unique /// 文件hash值
+  hash           String                @unique /// 文件hash值
   mimeType       String /// 文件MIME类型
   extension      String /// 文件扩展名
   path           String /// 文件存储路径
   url            String? /// 文件访问URL
   thumbnail_url  String? /// 缩略图URL
-  access_type    sys_media_access_type  @default(PRIVATE) /// 访问权限类型
-  enabled        Boolean                @default(true) /// 是否可用
-  type           String                 @default("file") /// 文件类型:file,image,video,audio,document等
+  access_type    sys_media_access_type @default(PRIVATE) /// 访问权限类型
+  enabled        Boolean               @default(true) /// 是否可用
+  type           String                @default("file") /// 文件类型:file,image,video,audio,document等
   category       String? /// 文件分类
   tags           String? /// 标签，JSON格式
   width          Int? /// 图片/视频宽度
   height         Int? /// 图片/视频高度
   duration       Int? /// 音视频时长(秒)
-  download_count Int                    @default(0) /// 下载次数
-  view_count     Int                    @default(0) /// 查看次数
+  download_count Int                   @default(0) /// 下载次数
+  view_count     Int                   @default(0) /// 查看次数
   creator_id     String? /// 创建者ID
-  creator        sys_user?              @relation("MediaCreator", fields: [creator_id], references: [uid])
-  isWechat       Boolean                @default(false) /// 是否为微信素材
-  wechat_id      String?                @unique /// 微信素材ID
+  creator        sys_user?             @relation("MediaCreator", fields: [creator_id], references: [uid])
+  isWechat       Boolean               @default(false) /// 是否为微信素材
+  wechat_id      String?               @unique /// 微信素材ID
   users          sys_user_media[] // 用户媒体关联
-  permissions    sys_media_permission[] // 媒体访问权限
 
   @@index([creator_id])
   @@index([access_type])
   @@index([type])
   @@index([category])
-}
-
-// 媒体权限管理表(ABAC) - 基于属性的访问控制
-model sys_media_permission {
-  uid          String          @id @default(uuid())
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @default(now()) @updatedAt
-  media_id     String
-  subject_type String /// 主体类型：user、role、department
-  subject_id   String /// 主体ID
-  permissions  String          @db.Text /// 权限类型数组，JSON格式存储
-  conditions   String?         @db.Text /// 权限条件，JSON格式
-  expire_at    DateTime? /// 过期时间
-  media        sys_media       @relation(fields: [media_id], references: [uid])
-  user         sys_user?       @relation(fields: [subject_id], references: [uid], map: "sys_media_permission_user_fkey")
-  department   sys_department? @relation(fields: [subject_id], references: [uid], map: "sys_media_permission_department_fkey")
-
-  @@unique([media_id, subject_type, subject_id])
-  @@index([subject_type, subject_id])
-  @@index([subject_id])
 }
 
 // 用户媒体关联表

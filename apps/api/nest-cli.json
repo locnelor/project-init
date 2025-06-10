@@ -1,14 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/worm-gateway/src",
+  "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
-    "tsConfigPath": "apps/worm-gateway/tsconfig.app.json"
+    "webpack": true
   },
-  "monorepo": true,
-  "root": "apps/worm-gateway",
   "projects": {
     "auth-power": {
       "type": "library",
@@ -71,60 +68,6 @@
       "sourceRoot": "libs/utils/src",
       "compilerOptions": {
         "tsConfigPath": "libs/utils/tsconfig.lib.json"
-      }
-    },
-    "wechat": {
-      "type": "library",
-      "root": "libs/wechat",
-      "entryFile": "index",
-      "sourceRoot": "libs/wechat/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/wechat/tsconfig.lib.json"
-      }
-    },
-    "worm-auth": {
-      "type": "application",
-      "root": "apps/worm-auth",
-      "entryFile": "main",
-      "sourceRoot": "apps/worm-auth/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/worm-auth/tsconfig.app.json"
-      }
-    },
-    "worm-file": {
-      "type": "application",
-      "root": "apps/worm-file",
-      "entryFile": "main",
-      "sourceRoot": "apps/worm-file/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/worm-file/tsconfig.app.json"
-      }
-    },
-    "worm-gateway": {
-      "type": "application",
-      "root": "apps/worm-gateway",
-      "entryFile": "main",
-      "sourceRoot": "apps/worm-gateway/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/worm-gateway/tsconfig.app.json"
-      }
-    },
-    "worm-job": {
-      "type": "application",
-      "root": "apps/worm-job",
-      "entryFile": "main",
-      "sourceRoot": "apps/worm-job/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/worm-job/tsconfig.app.json"
-      }
-    },
-    "worm-system": {
-      "type": "application",
-      "root": "apps/worm-system",
-      "entryFile": "main",
-      "sourceRoot": "apps/worm-system/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/worm-system/tsconfig.app.json"
       }
     }
   }

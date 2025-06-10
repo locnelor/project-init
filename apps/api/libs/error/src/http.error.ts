@@ -1,76 +1,14 @@
-import { HttpException } from "@nestjs/common";
+// 导入所需的NestJS异常类
+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 
+// 账号相关错误
+export const AccountNotExistError = new UnauthorizedException('账号不存在或已被禁用');
+export const AccountOrPasswordError = new UnauthorizedException('账号或密码错误');
+export const AccountExistError = new ConflictException('账号已存在');
 
-export class HttpError extends HttpException {
-  constructor(
-    public readonly code = 403,
-    message = ""
-  ) {
-    super(message, 403)
-  }
-  getCode() {
-    return this.code
-  }
-  getMessage() {
-    return this.message
-  }
-}
+// 用户信息相关错误
+export const EmailExistError = new ConflictException('邮箱已存在');
+export const PhoneExistError = new ConflictException('手机号已存在');
 
-
-/**
- * 找不到账号
- */
-export const NotFoundAccountException = new HttpError(
-  1000,
-  "未找到账号"
-)
-
-/**
- * 密码错误
- */
-export const WrongPasswordException = new HttpError(
-  1001,
-  "密码错误"
-)
-
-/**
- * 验证码获取过于频繁
- */
-export const CodeGetTooFrequentlyException = new HttpError(
-  1002,
-  "验证码获取过于频繁"
-)
-
-/**
- * 验证码生成失败
- */
-export const CodeGenerateFailedException = new HttpError(
-  1003,
-  "验证码生成失败"
-)
-
-/**
- * 邮箱格式错误
- */
-export const WrongEmailFormatException = new HttpError(
-  1004,
-  "邮箱格式错误"
-)
-
-/**
- * 网站初始化失败
- */
-export const WebsiteInitFailedException = new HttpError(
-  1005,
-  "网站初始化失败"
-)
-
-
-/**
- * 找不到商品
- */
-
-export const NotFoundGoodsException = new HttpError(
-  1006,
-  "找不到商品"
-)
+// 认证相关错误
+export const InvalidRefreshTokenError = new UnauthorizedException('刷新令牌无效');

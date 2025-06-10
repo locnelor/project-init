@@ -12,7 +12,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleInit() {
-    // TODO 实现软删除中间件
     this.$extends({
       query: {
         $allModels: {
@@ -35,7 +34,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       throw error;
     }
   }
-
 
   async onModuleDestroy() {
     await this.$disconnect();

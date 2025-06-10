@@ -19,7 +19,7 @@ export class RedisCache implements ICache {
    * 构造函数
    * @param cache cache manager 实例
    */
-  constructor(private readonly cache: Cache) {}
+  constructor(private readonly cache: Cache) { }
 
   /**
    * 获取缓存
@@ -30,10 +30,10 @@ export class RedisCache implements ICache {
     if (!key) {
       throw new Error('empty key');
     }
-    
+
     key = this.namespace + key;
-    let value = {};
-    
+    let value: any = {};
+
     try {
       value = await this.cache.get<T>(key) as T;
       if (!value) {
@@ -42,7 +42,7 @@ export class RedisCache implements ICache {
     } catch (error) {
       value = {};
     }
-    
+
     return value as T;
   }
 
@@ -57,13 +57,13 @@ export class RedisCache implements ICache {
     if (!key) {
       throw new Error('empty key');
     }
-    
+
     key = this.namespace + key;
     if (!ttl) {
       ttl = 0;
     }
-    
-    return this.cache.set(key, value, { ttl });
+
+    return this.cache.set(key, value, ttl);
   }
 
   /**
@@ -73,7 +73,7 @@ export class RedisCache implements ICache {
    */
   public remove(key: string): boolean {
     if (!key) return false;
-    
+
     key = this.namespace + key;
     try {
       this.cache.del(key);
@@ -88,9 +88,9 @@ export class RedisCache implements ICache {
    */
   public close(): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (typeof (this.cache.store as any).getClient === 'function') {
+    if (typeof (this.cache.stores as any).getClient === 'function') {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const client = (this.cache.store as any).getClient();
+      const client = (this.cache.stores as any).getClient();
       if (client) {
         client.quit();
       }

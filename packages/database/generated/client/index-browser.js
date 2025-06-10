@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.8.1
- * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
+ * Prisma Client JS version: 6.9.0
+ * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
  */
 Prisma.prismaVersion = {
-  client: "6.8.1",
-  engine: "2060c79ba17c6bb9f5823312b6f6b7f4a845738e"
+  client: "6.9.0",
+  engine: "81e4af48011447c3cc503a190e86995b66d2a28e"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -120,13 +120,31 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.Sys_departmentScalarFieldEnum = {
+  uid: 'uid',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  name: 'name',
+  code: 'code',
+  sort: 'sort',
+  status: 'status',
+  comment: 'comment',
+  parent_id: 'parent_id'
+};
+
 exports.Prisma.Sys_userScalarFieldEnum = {
   uid: 'uid',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   name: 'name',
-  role_id: 'role_id',
-  account: 'account'
+  account: 'account',
+  email: 'email',
+  phone: 'phone',
+  avatar: 'avatar',
+  status: 'status',
+  last_login_at: 'last_login_at',
+  department_id: 'department_id',
+  password: 'password'
 };
 
 exports.Prisma.Sys_accountScalarFieldEnum = {
@@ -152,12 +170,17 @@ exports.Prisma.Sys_menuScalarFieldEnum = {
   updatedAt: 'updatedAt',
   name: 'name',
   path: 'path',
+  component: 'component',
+  redirect: 'redirect',
   sort: 'sort',
-  power: 'power',
   icon: 'icon',
-  hidden: 'hidden',
+  visible: 'visible',
+  status: 'status',
+  cache: 'cache',
   type: 'type',
+  permission: 'permission',
   link: 'link',
+  frame: 'frame',
   comment: 'comment',
   parent_id: 'parent_id'
 };
@@ -175,8 +198,7 @@ exports.Prisma.Sys_menu_on_roleScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   role_id: 'role_id',
-  menu_id: 'menu_id',
-  power: 'power'
+  menu_id: 'menu_id'
 };
 
 exports.Prisma.Sys_roleScalarFieldEnum = {
@@ -184,9 +206,11 @@ exports.Prisma.Sys_roleScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   name: 'name',
+  code: 'code',
+  sort: 'sort',
   status: 'status',
-  comment: 'comment',
-  sort: 'sort'
+  data_scope: 'data_scope',
+  comment: 'comment'
 };
 
 exports.Prisma.Sys_mediaScalarFieldEnum = {
@@ -194,19 +218,28 @@ exports.Prisma.Sys_mediaScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   name: 'name',
+  alias: 'alias',
+  keywords: 'keywords',
   size: 'size',
   hash: 'hash',
   mimeType: 'mimeType',
   extension: 'extension',
   path: 'path',
   url: 'url',
-  isWechat: 'isWechat',
-  wechat_id: 'wechat_id',
+  thumbnail_url: 'thumbnail_url',
+  access_type: 'access_type',
   enabled: 'enabled',
   type: 'type',
+  category: 'category',
+  tags: 'tags',
   width: 'width',
   height: 'height',
-  duration: 'duration'
+  duration: 'duration',
+  download_count: 'download_count',
+  view_count: 'view_count',
+  creator_id: 'creator_id',
+  isWechat: 'isWechat',
+  wechat_id: 'wechat_id'
 };
 
 exports.Prisma.Sys_user_mediaScalarFieldEnum = {
@@ -215,136 +248,6 @@ exports.Prisma.Sys_user_mediaScalarFieldEnum = {
   updatedAt: 'updatedAt',
   user_id: 'user_id',
   media_id: 'media_id'
-};
-
-exports.Prisma.Sys_orderScalarFieldEnum = {
-  out_trade_no: 'out_trade_no',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  url: 'url',
-  transaction_id: 'transaction_id',
-  amount: 'amount',
-  description: 'description',
-  payOpen_id: 'payOpen_id',
-  trade_type: 'trade_type',
-  state: 'state',
-  bank_type: 'bank_type',
-  attach: 'attach',
-  user_id: 'user_id',
-  goods_id: 'goods_id'
-};
-
-exports.Prisma.Sys_goodsScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  user_id: 'user_id',
-  key: 'key',
-  amount: 'amount',
-  description: 'description'
-};
-
-exports.Prisma.Blog_categoriesScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  name: 'name',
-  description: 'description'
-};
-
-exports.Prisma.Blog_postsScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  title: 'title',
-  content: 'content',
-  status: 'status',
-  views: 'views',
-  likes: 'likes',
-  user_id: 'user_id',
-  categories_id: 'categories_id'
-};
-
-exports.Prisma.Blog_posts_on_tagsScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  posts_id: 'posts_id',
-  tag_id: 'tag_id'
-};
-
-exports.Prisma.Blog_tagScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  name: 'name',
-  description: 'description'
-};
-
-exports.Prisma.Blog_commentsScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  content: 'content',
-  status: 'status',
-  user_id: 'user_id',
-  post_id: 'post_id',
-  parent_id: 'parent_id'
-};
-
-exports.Prisma.Blog_linksScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  name: 'name',
-  url: 'url',
-  logo: 'logo',
-  description: 'description',
-  sort: 'sort',
-  status: 'status',
-  clicks: 'clicks'
-};
-
-exports.Prisma.Blog_announcementsScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  title: 'title',
-  content: 'content',
-  sort: 'sort',
-  status: 'status',
-  startTime: 'startTime',
-  endTime: 'endTime',
-  important: 'important',
-  author: 'author'
-};
-
-exports.Prisma.Bookkeep_recordScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  type: 'type',
-  amount: 'amount',
-  category: 'category',
-  description: 'description',
-  date: 'date',
-  user_id: 'user_id',
-  media_id: 'media_id'
-};
-
-exports.Prisma.Bookkeep_tagScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  name: 'name'
-};
-
-exports.Prisma.Bookkeep_record_on_tagsScalarFieldEnum = {
-  uid: 'uid',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  record_id: 'record_id',
-  tag_id: 'tag_id'
 };
 
 exports.Prisma.SortOrder = {
@@ -357,11 +260,23 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.sys_departmentOrderByRelevanceFieldEnum = {
+  uid: 'uid',
+  name: 'name',
+  code: 'code',
+  comment: 'comment',
+  parent_id: 'parent_id'
+};
+
 exports.Prisma.sys_userOrderByRelevanceFieldEnum = {
   uid: 'uid',
   name: 'name',
-  role_id: 'role_id',
-  account: 'account'
+  account: 'account',
+  email: 'email',
+  phone: 'phone',
+  avatar: 'avatar',
+  department_id: 'department_id',
+  password: 'password'
 };
 
 exports.Prisma.sys_accountOrderByRelevanceFieldEnum = {
@@ -380,6 +295,8 @@ exports.Prisma.sys_menuOrderByRelevanceFieldEnum = {
   uid: 'uid',
   name: 'name',
   path: 'path',
+  component: 'component',
+  redirect: 'redirect',
   icon: 'icon',
   type: 'type',
   link: 'link',
@@ -402,19 +319,27 @@ exports.Prisma.sys_menu_on_roleOrderByRelevanceFieldEnum = {
 exports.Prisma.sys_roleOrderByRelevanceFieldEnum = {
   uid: 'uid',
   name: 'name',
+  code: 'code',
+  data_scope: 'data_scope',
   comment: 'comment'
 };
 
 exports.Prisma.sys_mediaOrderByRelevanceFieldEnum = {
   uid: 'uid',
   name: 'name',
+  alias: 'alias',
+  keywords: 'keywords',
   hash: 'hash',
   mimeType: 'mimeType',
   extension: 'extension',
   path: 'path',
   url: 'url',
-  wechat_id: 'wechat_id',
-  type: 'type'
+  thumbnail_url: 'thumbnail_url',
+  type: 'type',
+  category: 'category',
+  tags: 'tags',
+  creator_id: 'creator_id',
+  wechat_id: 'wechat_id'
 };
 
 exports.Prisma.sys_user_mediaOrderByRelevanceFieldEnum = {
@@ -422,128 +347,24 @@ exports.Prisma.sys_user_mediaOrderByRelevanceFieldEnum = {
   user_id: 'user_id',
   media_id: 'media_id'
 };
-
-exports.Prisma.sys_orderOrderByRelevanceFieldEnum = {
-  out_trade_no: 'out_trade_no',
-  url: 'url',
-  transaction_id: 'transaction_id',
-  description: 'description',
-  payOpen_id: 'payOpen_id',
-  bank_type: 'bank_type',
-  attach: 'attach',
-  user_id: 'user_id',
-  goods_id: 'goods_id'
-};
-
-exports.Prisma.sys_goodsOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  user_id: 'user_id',
-  key: 'key',
-  description: 'description'
-};
-
-exports.Prisma.blog_categoriesOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  name: 'name',
-  description: 'description'
-};
-
-exports.Prisma.blog_postsOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  title: 'title',
-  content: 'content',
-  user_id: 'user_id',
-  categories_id: 'categories_id'
-};
-
-exports.Prisma.blog_posts_on_tagsOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  posts_id: 'posts_id',
-  tag_id: 'tag_id'
-};
-
-exports.Prisma.blog_tagOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  name: 'name',
-  description: 'description'
-};
-
-exports.Prisma.blog_commentsOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  content: 'content',
-  user_id: 'user_id',
-  post_id: 'post_id',
-  parent_id: 'parent_id'
-};
-
-exports.Prisma.blog_linksOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  name: 'name',
-  url: 'url',
-  logo: 'logo',
-  description: 'description'
-};
-
-exports.Prisma.blog_announcementsOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  title: 'title',
-  content: 'content',
-  author: 'author'
-};
-
-exports.Prisma.bookkeep_recordOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  category: 'category',
-  description: 'description',
-  user_id: 'user_id',
-  media_id: 'media_id'
-};
-
-exports.Prisma.bookkeep_tagOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  name: 'name'
-};
-
-exports.Prisma.bookkeep_record_on_tagsOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  record_id: 'record_id',
-  tag_id: 'tag_id'
-};
 exports.sys_account_provider = exports.$Enums.sys_account_provider = {
   we_chat: 'we_chat',
   github: 'github',
   qq: 'qq',
   email: 'email',
-  phone: 'phone',
-  account: 'account'
+  phone: 'phone'
 };
 
-exports.order_trade_type = exports.$Enums.order_trade_type = {
-  SYSTEM: 'SYSTEM',
-  NATIVE: 'NATIVE',
-  JSAPI: 'JSAPI',
-  APP: 'APP',
-  MICROPAY: 'MICROPAY',
-  MWEB: 'MWEB',
-  FACEPAY: 'FACEPAY'
-};
-
-exports.order_state = exports.$Enums.order_state = {
-  SUCCESS: 'SUCCESS',
-  REFUND: 'REFUND',
-  NOTPAY: 'NOTPAY',
-  CLOSED: 'CLOSED',
-  REVOKED: 'REVOKED',
-  USERPAYING: 'USERPAYING',
-  PAYERROR: 'PAYERROR'
-};
-
-exports.bookkeep_type = exports.$Enums.bookkeep_type = {
-  income: 'income',
-  expense: 'expense'
+exports.sys_media_access_type = exports.$Enums.sys_media_access_type = {
+  PUBLIC: 'PUBLIC',
+  PRIVATE: 'PRIVATE',
+  ROLE: 'ROLE',
+  USER: 'USER',
+  DEPARTMENT: 'DEPARTMENT'
 };
 
 exports.Prisma.ModelName = {
+  sys_department: 'sys_department',
   sys_user: 'sys_user',
   sys_account: 'sys_account',
   sys_user_roles: 'sys_user_roles',
@@ -552,19 +373,7 @@ exports.Prisma.ModelName = {
   sys_menu_on_role: 'sys_menu_on_role',
   sys_role: 'sys_role',
   sys_media: 'sys_media',
-  sys_user_media: 'sys_user_media',
-  sys_order: 'sys_order',
-  sys_goods: 'sys_goods',
-  blog_categories: 'blog_categories',
-  blog_posts: 'blog_posts',
-  blog_posts_on_tags: 'blog_posts_on_tags',
-  blog_tag: 'blog_tag',
-  blog_comments: 'blog_comments',
-  blog_links: 'blog_links',
-  blog_announcements: 'blog_announcements',
-  bookkeep_record: 'bookkeep_record',
-  bookkeep_tag: 'bookkeep_tag',
-  bookkeep_record_on_tags: 'bookkeep_record_on_tags'
+  sys_user_media: 'sys_user_media'
 };
 
 /**
