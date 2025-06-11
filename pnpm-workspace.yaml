@@ -1,6 +1,7 @@
 packages:
   - apps/*
   - packages/*
+  - scripts/*
 catalog:
   "@ant-design/icons": ^6.0.0
   "@apollo/client": ^3.13.8

@@ -281,9 +281,9 @@ importers:
 
   .:
     devDependencies:
-      '@pkg/turbo-run':
+      '@scripts/turbo-run':
         specifier: workspace:*
-        version: link:packages/turbo-run
+        version: link:scripts/turbo-run
       prettier:
         specifier: 'catalog:'
         version: 3.5.3
@@ -621,24 +621,6 @@ importers:
 
   packages/tsconfig: {}
 
-  packages/turbo-run:
-    dependencies:
-      '@clack/prompts':
-        specifier: 'catalog:'
-        version: 0.11.0
-      '@pkg/pkg-utils':
-        specifier: workspace:*
-        version: link:../pkg-utils
-      '@pkg/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@types/node':
-        specifier: 'catalog:'
-        version: 22.15.30
-      cac:
-        specifier: 'catalog:'
-        version: 6.7.14
-
   packages/types:
     dependencies:
       '@pkg/database':
@@ -660,6 +642,24 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
+
+  scripts/turbo-run:
+    dependencies:
+      '@clack/prompts':
+        specifier: 'catalog:'
+        version: 0.11.0
+      '@pkg/pkg-utils':
+        specifier: workspace:*
+        version: link:../../packages/pkg-utils
+      '@pkg/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.15.30
+      cac:
+        specifier: 'catalog:'
+        version: 6.7.14
 
 packages:
 

@@ -1,5 +1,5 @@
 {
-  "name": "@pkg/turbo-run",
+  "name": "@scripts/turbo-run",
   "version": "5.5.3",
   "private": true,
   "license": "MIT",

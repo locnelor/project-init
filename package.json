@@ -11,10 +11,11 @@
     "check-types": "turbo run check-types",
     "db:generate": "turbo run generate",
     "postinstall": "pnpm -r run stub --if-present",
-    "db:push": "turbo run push"
+    "db:push": "turbo run push",
+    "clean": "node ./scripts/clean.mjs"
   },
   "devDependencies": {
-    "@pkg/turbo-run": "workspace:*",
+    "@scripts/turbo-run": "workspace:*",
     "prettier": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
