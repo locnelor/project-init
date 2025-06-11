@@ -1,0 +1,21 @@
+{
+  "name": "@pkg/components",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@apollo/client": "^3.13.8",
+    "@pkg/tsconfig": "workspace:*",
+    "@types/node": "^22.15.17",
+    "@types/react": "^19.0.10",
+    "antd": "^5.24.3",
+    "dayjs": "^1.11.13",
+    "react": "^19.0.0"
+  }
+}
