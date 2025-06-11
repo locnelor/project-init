@@ -1,4 +1,4 @@
-import { readdirSync, rmSync } from 'node:fs'
+import { readdirSync, rm } from 'node:fs'
 import { join } from 'node:path';
 
 // 递归清理指定目录下的目标文件夹
@@ -11,7 +11,13 @@ const recursiveCleanDirectories = (directoryPath, targetDirs) => {
 
       if (targetDirs.includes(entry)) {
         // 如果是目标文件夹，直接删除
-        rmSync(fullPath, { recursive: true, force: true })
+        rm(fullPath, { recursive: true, force: true }, (err) => {
+          if (err) {
+            console.error(`删除目录时发生错误: ${fullPath}`, err)
+          } else {
+            console.log(`删除目录: ${fullPath}`)
+          }
+        })
         continue
       }
 
@@ -21,6 +27,7 @@ const recursiveCleanDirectories = (directoryPath, targetDirs) => {
   } catch (err) {
     // 忽略访问权限错误等
     if (err.code !== 'ENOTDIR') {
+      console.error(`处理目录时发生错误: ${directoryPath}`, err)
       throw err
     }
   }
@@ -29,9 +36,12 @@ const recursiveCleanDirectories = (directoryPath, targetDirs) => {
 // 主函数
 (() => {
   const directoriesToClean = ['node_modules', 'dist', '.turbo']
+  console.log('开始清理目录...')
+  console.log(`需要清理的目录: ${directoriesToClean.join(', ')}`)
 
   try {
     recursiveCleanDirectories(process.cwd(), directoriesToClean)
+    console.log('清理完成!')
   } catch (error) {
     console.error('清理文件夹时发生错误:', error)
     process.exit(1)
