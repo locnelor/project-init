@@ -1,0 +1,25 @@
+{
+  "name": "@pkg/turbo-run",
+  "version": "5.5.3",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "stub": "pnpm unbuild --stub"
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "turbo-run": "./bin/turbo-run.mjs"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "dependencies": {
+    "@pkg/tsconfig": "workspace:*",
+    "@clack/prompts": "catalog:",
+    "@pkg/pkg-utils": "workspace:*",
+    "@types/node": "catalog:",
+    "cac": "catalog:"
+  }
+}

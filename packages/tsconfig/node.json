@@ -1,23 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node Config",
+  "extends": "./base.json",
   "compilerOptions": {
-    "module": "NodeNext",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "useDefineForClassFields": false,
-    "target": "ES2021",
-    "sourceMap": true,
-    "outDir": "./dist",
+    "composite": false,
+    "lib": ["ESNext"],
     "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "types": ["node"],
+    "noImplicitAny": true
   }
 }

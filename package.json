@@ -3,22 +3,43 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "turbo-run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "start:api": "pnpm --filter @web/api start",
     "dev:api": "pnpm --filter @web/api start --watch",
     "check-types": "turbo run check-types",
     "db:generate": "turbo run generate",
+    "postinstall": "pnpm -r run stub --if-present",
     "db:push": "turbo run push"
   },
   "devDependencies": {
     "prettier": "^3.5.3",
-    "turbo": "^2.5.4",
+    "@pkg/turbo-run": "workspace:*",
+    "turbo": "catalog:",
+    "unbuild": "catalog:",
     "typescript": "5.8.2"
   },
-  "packageManager": "pnpm@9.0.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=20.10.0",
+    "pnpm": ">=9.12.0"
+  },
+  "exports": {
+    ".": {
+      "default": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "packageManager": "pnpm@9.15.7",
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "eslint": "*"
+      }
+    },
+    "neverBuiltDependencies": [
+      "canvas",
+      "node-gyp"
+    ]
   }
 }
