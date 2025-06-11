@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "dev": "nest start --watch",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
@@ -49,6 +50,7 @@
     "raw-body": "catalog:",
     "reflect-metadata": "catalog:",
     "rxjs": "catalog:",
+    "ts-morph": "catalog:",
     "wechatpay-node-v3": "catalog:"
   },
   "devDependencies": {

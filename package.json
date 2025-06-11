@@ -14,11 +14,11 @@
     "db:push": "turbo run push"
   },
   "devDependencies": {
-    "prettier": "^3.5.3",
     "@pkg/turbo-run": "workspace:*",
+    "prettier": "catalog:",
     "turbo": "catalog:",
-    "unbuild": "catalog:",
-    "typescript": "5.8.2"
+    "typescript": "catalog:",
+    "unbuild": "catalog:"
   },
   "engines": {
     "node": ">=20.10.0",
@@ -30,7 +30,7 @@
     },
     "./package.json": "./package.json"
   },
-  "packageManager": "pnpm@9.15.7",
+  "packageManager": "pnpm@10.12.1",
   "pnpm": {
     "peerDependencyRules": {
       "allowedVersions": {
