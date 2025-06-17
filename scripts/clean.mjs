@@ -28,7 +28,6 @@ const recursiveCleanDirectories = (directoryPath, targetDirs) => {
     // 忽略访问权限错误等
     if (err.code !== 'ENOTDIR') {
       console.error(`处理目录时发生错误: ${directoryPath}`, err)
-      throw err
     }
   }
 }

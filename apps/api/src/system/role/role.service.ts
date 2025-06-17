@@ -6,16 +6,27 @@ import { QueryRoleDto } from './dto/query-role.dto';
 import { PaginationResult, PaginationHelper } from '../../common/dto/pagination.dto';
 import { Prisma } from '@pkg/database';
 
+class BaseService {
+  constructor(
+    protected prismaService: PrismaService
+  ) { }
+}
+
+
 @Injectable()
 export class RoleService {
   constructor(
     private readonly prismaService: PrismaService
-  ) { }
+  ) {
+    type c = Prisma.ModelName
+    const a = Prisma.ModelName
+  }
 
   /**
    * 获取所有角色
    */
   async findAll() {
+
     return await this.prismaService.sys_role.findMany({
       include: {
         _count: {
