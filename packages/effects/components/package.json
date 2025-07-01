@@ -10,12 +10,7 @@
     }
   },
   "dependencies": {
-    "@apollo/client": "catalog:",
     "@pkg/tsconfig": "workspace:*",
-    "@types/node": "catalog:",
-    "@types/react": "catalog:",
-    "antd": "catalog:",
-    "dayjs": "catalog:",
     "react": "catalog:"
   }
 }
