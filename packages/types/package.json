@@ -1,0 +1,17 @@
+{
+  "name": "@pkg/types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@internal/tsconfig": "workspace:*",
+    "@pkg/database": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}

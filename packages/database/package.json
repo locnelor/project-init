@@ -1,0 +1,28 @@
+{
+  "name": "@pkg/database",
+  "version": "1.0.0",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "type": "commonjs",
+  "scripts": {
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:seed": "tsx src/seed.ts",
+    "db:pull": "prisma db pull",
+    "format": "prisma format",
+    "generate": "prisma generate",
+    "push": "prisma db push"
+  },
+  "dependencies": {
+    "@prisma/client": "catalog:"
+  },
+  "devDependencies": {
+    "eslint": "catalog:",
+    "prisma": "catalog:",
+    "rimraf": "catalog:",
+    "tsup": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}
