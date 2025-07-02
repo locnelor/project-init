@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@scripts/turbo-run": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
     "prettier": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",

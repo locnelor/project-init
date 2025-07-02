@@ -18,7 +18,6 @@
     "@prisma/client": "catalog:"
   },
   "devDependencies": {
-    "@pkg/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prisma": "catalog:",
     "rimraf": "catalog:",

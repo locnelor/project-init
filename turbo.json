@@ -4,12 +4,10 @@
   "globalDependencies": [
     "pnpm-lock.yaml",
     "**/.env.*local",
-    "**/tsconfig*.json",
-    "**/tsconfig*.json",
-    ".env.*"
+    "**/tsconfig*.json"
   ],
   "globalEnv": [
-    ".env*"
+    "NODE_ENV"
   ],
   "tasks": {
     "build": {
@@ -22,17 +20,9 @@
       ],
       "outputs": [
         ".next/**",
-        "!.next/cache/**"
-      ]
-    },
-    "lint": {
-      "dependsOn": [
-        "^lint"
-      ]
-    },
-    "check-types": {
-      "dependsOn": [
-        "^check-types"
+        "!.next/cache/**",
+        "dist/**",
+        "dist.zip"
       ]
     },
     "dev": {
@@ -40,14 +30,6 @@
         "^generate",
         "^build"
       ],
-      "cache": false,
-      "persistent": true
-    },
-    "start": {
-      "dependsOn": [
-        "^generate"
-      ],
-      "outputs": [],
       "cache": false,
       "persistent": true
     },
