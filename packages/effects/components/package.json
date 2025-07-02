@@ -10,7 +10,6 @@
     }
   },
   "dependencies": {
-    "@pkg/tsconfig": "workspace:*",
-    "react": "catalog:"
+    "@pkg/tsconfig": "workspace:*"
   }
 }
