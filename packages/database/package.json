@@ -12,8 +12,6 @@
     }
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
     "db:seed": "tsx src/seed.ts",
@@ -29,7 +27,6 @@
   "devDependencies": {
     "prisma": "catalog:",
     "rimraf": "catalog:",
-    "tsup": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"
   }
