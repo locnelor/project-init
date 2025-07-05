@@ -17,10 +17,15 @@
   "devDependencies": {
     "@scripts/turbo-run": "workspace:*",
     "@internal/tsconfig": "workspace:*",
+    "@internal/tailwind-config": "workspace:*",
+    "@internal/vite-config": "workspace:*",
+    "@types/node": "catalog:",
     "prettier": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
-    "unbuild": "catalog:"
+    "unbuild": "catalog:",
+    "vite": "catalog:",
+    "tailwindcss": "catalog:"
   },
   "engines": {
     "node": ">=20.10.0",

@@ -4,9 +4,14 @@
   "extends": "./base.json",
   "compilerOptions": {
     "composite": false,
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "baseUrl": "./",
-    "types": ["node"],
-    "noImplicitAny": true
+    "types": [
+      "node"
+    ],
+    "noImplicitAny": true,
+    "moduleResolution": "bundler"
   }
 }

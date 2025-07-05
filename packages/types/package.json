@@ -1,5 +1,5 @@
 {
-  "name": "@pkg/types",
+  "name": "@repo/types",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -8,7 +8,7 @@
   "license": "ISC",
   "dependencies": {
     "@internal/tsconfig": "workspace:*",
-    "@pkg/database": "workspace:*"
+    "@repo/database": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",

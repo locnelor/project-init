@@ -1,1 +1,1 @@
-# @pkg/components
+# @repo/components

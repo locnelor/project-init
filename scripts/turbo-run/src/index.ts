@@ -1,5 +1,5 @@
 // 导入必要的依赖
-import { getPackages, execaCommand } from "@pkg/pkg-utils";
+import { getPackages, execaCommand } from "@internal/pkg-utils";
 import { cac } from "cac"
 import { cancel, isCancel, select } from '@clack/prompts';
 

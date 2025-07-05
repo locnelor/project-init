@@ -5,7 +5,34 @@
   "license": "ISC",
   "author": "",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./postcss": {
+      "types": "./src/postcss.config.ts",
+      "import": "./dist/postcss.config.mjs",
+      "require": "./dist/postcss.config.cjs",
+      "default": "./dist/postcss.config.mjs"
+    },
+    "./*": "./*"
+  },
+  "scripts": {
+    "stub": "pnpm unbuild"
+  },
   "dependencies": {
-    
+    "@iconify/tailwind": "catalog:",
+    "@internal/pkg-utils": "workspace:*",
+    "@tailwindcss/postcss": "catalog:",
+    "@tailwindcss/typography": "catalog:",
+    "postcss": "catalog:",
+    "postcss-antd-fixes": "catalog:",
+    "postcss-import": "catalog:",
+    "postcss-nesting": "catalog:",
+    "postcss-preset-env": "catalog:",
+    "tailwindcss": "catalog:",
+    "tailwindcss-animate": "catalog:"
   }
 }

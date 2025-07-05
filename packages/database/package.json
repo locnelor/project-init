@@ -1,5 +1,5 @@
 {
-  "name": "@pkg/database",
+  "name": "@repo/database",
   "version": "1.0.0",
   "exports": {
     ".": "./index.ts"
