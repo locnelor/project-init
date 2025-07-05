@@ -8,6 +8,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "start:api": "pnpm --filter @web/api start",
     "dev:api": "pnpm --filter @web/api start --watch",
+    "generate": "turbo run generate",
+    "push": "turbo run push",
     "check-types": "turbo run check-types",
     "db:generate": "turbo run generate",
     "postinstall": "pnpm -r run stub --if-present",
