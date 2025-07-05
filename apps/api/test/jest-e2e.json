@@ -19,8 +19,6 @@
     "@app/file/(.*)": "<rootDir>/../libs/file/src/$1",
     "@app/hash": "<rootDir>/../libs/hash/src",
     "@app/hash/(.*)": "<rootDir>/../libs/hash/src/$1",
-    "@app/prisma": "<rootDir>/../libs/prisma/src",
-    "@app/prisma/(.*)": "<rootDir>/../libs/prisma/src/$1",
     "@app/redis-cache": "<rootDir>/../libs/redis-cache/src",
     "@app/redis-cache/(.*)": "<rootDir>/../libs/redis-cache/src/$1"
   }
