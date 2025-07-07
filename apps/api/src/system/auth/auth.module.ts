@@ -1,4 +1,11 @@
 import { Module } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { AuthPowerModule } from '@app/auth-power';
 
-@Module({})
+@Module({
+  imports:[
+    AuthPowerModule
+  ],
+  providers: [AuthService]
+})
 export class AuthModule {}

@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <div class="bg-red-500 h-96 flex justify-center items-center">
     <div class="bg-blue-500 w-32 h-32"></div>

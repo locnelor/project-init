@@ -1,0 +1,193 @@
+/* Markdown预览样式 */
+.markdown-preview {
+  line-height: 1.6;
+}
+
+/* 标题样式 */
+.markdown-preview h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.markdown-preview h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.markdown-preview h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-preview h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-preview h5 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-preview h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 段落样式 */
+.markdown-preview p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* 列表样式 */
+.markdown-preview ul,
+.markdown-preview ol {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.markdown-preview ul {
+  list-style-type: disc;
+}
+
+.markdown-preview ol {
+  list-style-type: decimal;
+}
+
+.markdown-preview li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.markdown-preview li > ul,
+.markdown-preview li > ol {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+/* 引用块样式 */
+.markdown-preview blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: #6b7280;
+}
+
+/* 代码块样式 */
+.markdown-preview pre {
+  background-color: #1e1e1e;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* 行内代码样式 */
+.markdown-preview code:not([class*="language-"]) {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.4rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875em;
+}
+
+.dark .markdown-preview code:not([class*="language-"]) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 表格样式 */
+.markdown-preview table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  display: block;
+}
+
+.markdown-preview table th,
+.markdown-preview table td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.markdown-preview table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+.dark .markdown-preview table th {
+  background-color: #374151;
+}
+
+.dark .markdown-preview table td,
+.dark .markdown-preview table th {
+  border-color: #4b5563;
+}
+
+/* 水平线样式 */
+.markdown-preview hr {
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dark .markdown-preview hr {
+  border-color: #4b5563;
+}
+
+/* 链接样式 */
+.markdown-preview a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.markdown-preview a:hover {
+  text-decoration: none;
+}
+
+/* 图片样式 */
+.markdown-preview img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.375rem;
+}
+
+/* 暗色模式适配 */
+.dark .markdown-preview h1,
+.dark .markdown-preview h2 {
+  border-bottom-color: #4b5563;
+}
+
+.dark .markdown-preview blockquote {
+  border-left-color: #4b5563;
+  color: #9ca3af;
+}

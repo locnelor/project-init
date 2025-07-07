@@ -68,6 +68,7 @@ model sys_user {
   ban_menus     sys_user_ban_menu[] // 用户菜单黑名单
   user_media    sys_user_media[] // 用户关联的媒体文件
   created_media sys_media[]         @relation("MediaCreator") // 用户创建的媒体文件
+  blog_article  blog_article[]
 
   @@index([department_id])
 }
@@ -226,4 +227,57 @@ model sys_user_media {
 
   @@unique([user_id, media_id])
   @@index([media_id])
+}
+
+// 博客分类表
+model blog_categories {
+  uid        String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  name       String   @unique /// 分类名称
+  slug       String   @unique /// 分类别名
+  sort       Int      @default(10) /// 排序
+  status     Boolean  @default(true) /// 状态
+  comment    String?  @db.LongText /// 备注
+  blog_count Int      @default(0) /// 博客数量
+}
+
+model blog_tag {
+  uid       String             @id @default(uuid())
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @default(now()) @updatedAt
+  name      String             @unique /// 标签名称
+  comment   String?            @db.LongText /// 备注
+  articles  blog_article_tag[]
+}
+
+model blog_article {
+  uid       String             @id @default(uuid())
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @default(now()) @updatedAt
+  title     String             @unique /// 文章标题
+  slug      String             @unique /// 文章别名
+  sort      Int                @default(10) /// 排序
+  status    Boolean            @default(true) /// 状态
+  comment   String?            @db.LongText /// 备注
+  content   String             @db.LongText /// 文章内容
+  summary   String?            @db.LongText /// 文章摘要
+  user_id   String? /// 创建者ID
+  tags      blog_article_tag[]
+  creator   sys_user?          @relation(fields: [user_id], references: [uid])
+
+  @@index([user_id])
+}
+
+model blog_article_tag {
+  uid        String       @id @default(uuid())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now()) @updatedAt
+  article_id String /// 文章ID
+  tag_id     String /// 标签ID
+  article    blog_article @relation(fields: [article_id], references: [uid])
+  tag        blog_tag     @relation(fields: [tag_id], references: [uid])
+
+  @@unique([article_id, tag_id])
+  @@index([tag_id])
 }
