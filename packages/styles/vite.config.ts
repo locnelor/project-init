@@ -1,6 +1,8 @@
 // import { defineConfig } from 'vite'
 // import { resolve } from 'path'
 
+import { defineConfig } from '@internal/vite-config'
+
 // export default defineConfig({
 //   build: {
 //     lib: {
@@ -17,4 +19,5 @@
 //     cssCodeSplit: false
 //   }
 // })
-export { defineConfig } from '@internal/vite-config'
+
+export default defineConfig()
